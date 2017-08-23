@@ -1,0 +1,28 @@
+---
+  version: '3'
+  services:
+    jira:
+      build:
+        context: ./jira
+      image: chippinkston/jira:${TAG}
+      networks: ['req']
+
+    confluence:
+      build:
+        context: ./confluence
+      image: chippinkston/confluence:${TAG}
+      networks: ['req']
+
+    bitbucket:
+      build:
+        context: ./bitbucket
+      image: chippinkston/bitbucket:${TAG}
+      networks: ['req']
+
+    bamboo:
+      build:
+        context: ./bamboo
+      image: chippinkston/bamboo:${TAG}
+      networks: ['req']
+
+  networks: {req: {}}
