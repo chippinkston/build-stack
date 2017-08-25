@@ -25,14 +25,20 @@
         - ./confluence/data:/var/atlassian/application-data/confluence
       networks: ['req']
 
-#    bitbucket:
-#      build:
-#        context: ./bitbucket
-#      image: chippinkston/bitbucket:${TAG}
-#      environment: [
-#        "VIRTUAL_HOST=bitbucket.${DOMAIN}"
-#      ]
-#      networks: ['req']
+    bitbucket:
+      build:
+        context: ./bitbucket
+      image: chippinkston/bitbucket:${TAG}
+      environment: [
+        "VIRTUAL_HOST=bitbucket.${DOMAIN}",
+        "VIRTUAL_PORT=7990"
+      ]
+      ports:
+        - "7990:7990"
+        - "7999:7999"
+      volumes:
+        - bitbucketVolume:/var/atlassian/application-data/bitbucket
+      networks: ['req']
 
 #    bamboo:
 #      build:
@@ -43,14 +49,29 @@
 #      ]
 #      networks: ['req']
 
+#    db:
+#      build:
+#        context: ./postgres
+#      image: chippinkston/postgres:${TAG}
+#      environment: [
+#        "POSTGRES_PASSWORD: example",
+#        "VIRTUAL_HOST=postgres.${DOMAIN}",
+#        "VIRTUAL_PORT=5432"
+#      ]
+
   # nginx proxy - map ports to virtual hosts environmental variables:
   # reference -https://blog.florianlopes.io/host-multiple-websites-on-single-host-docker/
     nginx-proxy:
-      image: jwilder/nginx-proxy
+      build:
+        context: ./nginx
+      image: chippinkston/nginx:${TAG}
       ports:
         - "80:80"
       volumes:
         - /var/run/docker.sock:/tmp/docker.sock
       networks: ['req']
 
+
+  volumes:
+    bitbucketVolume:
   networks: {req: {}}
