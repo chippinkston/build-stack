@@ -1,28 +1,56 @@
 ---
   version: '3'
   services:
-    jira:
-      build:
-        context: ./jira
-      image: chippinkston/jira:${TAG}
-      networks: ['req']
+#    jira:
+#      build:
+#        context: ./jira
+#      image: chippinkston/jira:${TAG}
+#      environment: [
+#        "VIRTUAL_HOST=jira.${DOMAIN}"
+#     ]
+#      networks: ['req']
 
     confluence:
       build:
         context: ./confluence
       image: chippinkston/confluence:${TAG}
+      environment: [
+        "VIRTUAL_HOST=confluence.${DOMAIN}",
+        "VIRTUAL_PORT=8090"
+      ]
+      ports:
+        - "8090:8090"
+        - "8091:8091"
+      volumes:
+        - ./confluence/data:/var/atlassian/application-data/confluence
       networks: ['req']
 
-    bitbucket:
-      build:
-        context: ./bitbucket
-      image: chippinkston/bitbucket:${TAG}
-      networks: ['req']
+#    bitbucket:
+#      build:
+#        context: ./bitbucket
+#      image: chippinkston/bitbucket:${TAG}
+#      environment: [
+#        "VIRTUAL_HOST=bitbucket.${DOMAIN}"
+#      ]
+#      networks: ['req']
 
-    bamboo:
-      build:
-        context: ./bamboo
-      image: chippinkston/bamboo:${TAG}
+#    bamboo:
+#      build:
+#        context: ./bamboo
+#      image: chippinkston/bamboo:${TAG}
+#      environment: [
+#        "VIRTUAL_HOST=bamboo.${DOMAIN}"
+#      ]
+#      networks: ['req']
+
+  # nginx proxy - map ports to virtual hosts environmental variables:
+  # reference -https://blog.florianlopes.io/host-multiple-websites-on-single-host-docker/
+    nginx-proxy:
+      image: jwilder/nginx-proxy
+      ports:
+        - "80:80"
+      volumes:
+        - /var/run/docker.sock:/tmp/docker.sock
       networks: ['req']
 
   networks: {req: {}}
