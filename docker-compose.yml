@@ -10,6 +10,8 @@
 #        "VIRTUAL_HOST=jira.${DOMAIN}"
 #     ]
 #      networks: ['req']
+#     container_name: req_jira
+
 
     confluence:
       build:
@@ -25,6 +27,7 @@
       volumes:
         - ./confluence/data:/var/atlassian/application-data/confluence
       networks: ['req']
+     container_name: req_conf
 
     bitbucket:
       build:
@@ -40,6 +43,7 @@
       volumes:
         - bitbucketVolume:/var/atlassian/application-data/bitbucket
       networks: ['req']
+      container_name: req_bit
 
 # TODO: Find or Build a basic Bamboo Dockerfile
 #    bamboo:
@@ -50,18 +54,20 @@
 #        "VIRTUAL_HOST=bamboo.${DOMAIN}"
 #      ]
 #      networks: ['req']
+#      container_name: req_build
 
 # TODO: Debug the issues this seems to cause with bitbucket
-#    postgres:
-#      build:
-#        context: ./postgres
-#      image: chippinkston/postgres:${TAG}
-#      environment: [
-#        "POSTGRES_PASSWORD: example",
-#        "VIRTUAL_HOST=postgres.${DOMAIN}",
-#        "VIRTUAL_PORT=5432"
-#      ]
-#      networks: ['req']
+    postgres:
+      build:
+        context: ./postgres
+      image: chippinkston/postgres:${TAG}
+      environment: [
+        "POSTGRES_PASSWORD: example",
+        "VIRTUAL_HOST=postgres.${DOMAIN}",
+        "VIRTUAL_PORT=5432"
+      ]
+      networks: ['req']
+      container_name: req_db
 
 
   # nginx proxy - map ports to virtual hosts environmental variables:
@@ -75,6 +81,7 @@
       volumes:
         - /var/run/docker.sock:/tmp/docker.sock
       networks: ['req']
+      container_name: req_nginx
 
 
   volumes:
