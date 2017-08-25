@@ -86,7 +86,8 @@
         "jira:jira.${DOMAIN}",
         "postgres:postgres.${DOMAIN}",
 
-      ]      container_name: req_build
+      ]
+      container_name: req_build
 
 # TODO: Debug the issues this seems to cause with bitbucket
     postgres:
