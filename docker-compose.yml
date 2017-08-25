@@ -2,16 +2,18 @@
   version: '3'
   services:
 # TODO: Find or Build a basic Jira Dockerfile
-#    jira:
-#      build:
-#        context: ./jira
-#      image: chippinkston/jira:${TAG}
-#      environment: [
-#        "VIRTUAL_HOST=jira.${DOMAIN}"
-#     ]
-#      networks: ['req']
-#     container_name: req_jira
-
+    jira:
+      build:
+        context: ./jira
+      image: chippinkston/jira:${TAG}
+      environment: [
+        "VIRTUAL_HOST=jira.${DOMAIN}",
+        "VIRTUAL_PORT=8080"
+      ]
+      ports:
+        - "8080:8080"
+      networks: ['req']
+      container_name: req_jira
 
     confluence:
       build:
@@ -46,15 +48,18 @@
       container_name: req_bit
 
 # TODO: Find or Build a basic Bamboo Dockerfile
-#    bamboo:
-#      build:
-#        context: ./bamboo
-#      image: chippinkston/bamboo:${TAG}
-#      environment: [
-#        "VIRTUAL_HOST=bamboo.${DOMAIN}"
-#      ]
-#      networks: ['req']
-#      container_name: req_build
+    bamboo:
+      build:
+        context: ./bamboo
+      image: chippinkston/bamboo:${TAG}
+      environment: [
+        "VIRTUAL_HOST=bamboo.${DOMAIN}",
+        "VIRTUAL_PORT=8085"
+      ]
+      ports:
+        - "8085:8085"
+      networks: ['req']
+      container_name: req_build
 
 # TODO: Debug the issues this seems to cause with bitbucket
     postgres:
