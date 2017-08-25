@@ -27,7 +27,7 @@
       volumes:
         - ./confluence/data:/var/atlassian/application-data/confluence
       networks: ['req']
-     container_name: req_conf
+      container_name: req_conf
 
     bitbucket:
       build:
