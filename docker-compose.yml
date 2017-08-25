@@ -1,6 +1,7 @@
 ---
   version: '3'
   services:
+# TODO: Find or Build a basic Jira Dockerfile
 #    jira:
 #      build:
 #        context: ./jira
@@ -40,6 +41,7 @@
         - bitbucketVolume:/var/atlassian/application-data/bitbucket
       networks: ['req']
 
+# TODO: Find or Build a basic Bamboo Dockerfile
 #    bamboo:
 #      build:
 #        context: ./bamboo
@@ -49,7 +51,8 @@
 #      ]
 #      networks: ['req']
 
-#    db:
+# TODO: Debug the issues this seems to cause with bitbucket
+#    postgres:
 #      build:
 #        context: ./postgres
 #      image: chippinkston/postgres:${TAG}
@@ -58,6 +61,8 @@
 #        "VIRTUAL_HOST=postgres.${DOMAIN}",
 #        "VIRTUAL_PORT=5432"
 #      ]
+#      networks: ['req']
+
 
   # nginx proxy - map ports to virtual hosts environmental variables:
   # reference -https://blog.florianlopes.io/host-multiple-websites-on-single-host-docker/
