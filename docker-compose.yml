@@ -13,6 +13,13 @@
       ports:
         - "8080:8080"
       networks: ['req']
+      links: [
+        "confluence:confluence.${DOMAIN}",
+        "bitbucket:bitbucket.${DOMAIN}",
+        "bamboo:bamboo.${DOMAIN}",
+        "postgres:postgres.${DOMAIN}",
+
+      ]
       container_name: req_jira
 
     confluence:
@@ -29,6 +36,13 @@
       volumes:
         - ./confluence/data:/var/atlassian/application-data/confluence
       networks: ['req']
+      links: [
+        "jira:jira.${DOMAIN}",
+        "bitbucket:bitbucket.${DOMAIN}",
+        "bamboo:bamboo.${DOMAIN}",
+        "postgres:postgres.${DOMAIN}",
+
+      ]
       container_name: req_conf
 
     bitbucket:
@@ -45,6 +59,13 @@
       volumes:
         - bitbucketVolume:/var/atlassian/application-data/bitbucket
       networks: ['req']
+      links: [
+        "confluence:confluence.${DOMAIN}",
+        "jira:jira.${DOMAIN}",
+        "bamboo:bamboo.${DOMAIN}",
+        "postgres:postgres.${DOMAIN}",
+
+      ]
       container_name: req_bit
 
 # TODO: Find or Build a basic Bamboo Dockerfile
@@ -59,7 +80,13 @@
       ports:
         - "8085:8085"
       networks: ['req']
-      container_name: req_build
+      links: [
+        "confluence:confluence.${DOMAIN}",
+        "bitbucket:bitbucket.${DOMAIN}",
+        "jira:jira.${DOMAIN}",
+        "postgres:postgres.${DOMAIN}",
+
+      ]      container_name: req_build
 
 # TODO: Debug the issues this seems to cause with bitbucket
     postgres:
@@ -72,6 +99,13 @@
         "VIRTUAL_PORT=5432"
       ]
       networks: ['req']
+      links: [
+        "confluence:confluence.${DOMAIN}",
+        "bitbucket:bitbucket.${DOMAIN}",
+        "bamboo:bamboo.${DOMAIN}",
+        "jira:jira.${DOMAIN}",
+
+      ]
       container_name: req_db
 
 
